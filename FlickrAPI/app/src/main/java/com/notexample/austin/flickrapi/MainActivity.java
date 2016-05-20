@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = responseBody.getJSONObject("photos");
                     JSONArray jsonArray = jsonObject.getJSONArray("photo");
-//                    JSONObject jsonObject1 = jsonArray.getJSONObject(9);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject photo = jsonArray.getJSONObject(i);
                         if(!photo.has("url_l")) continue;
@@ -101,19 +100,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    public void checkingCOnnection(View view) {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Connection ready",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Connection not ready",
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 }
 
