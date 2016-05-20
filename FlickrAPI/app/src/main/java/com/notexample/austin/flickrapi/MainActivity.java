@@ -73,6 +73,27 @@ public class MainActivity extends AppCompatActivity {
                     items.add(jsonArray.getJSONObject(1).getString("url_l"));
                     items.add(jsonArray.getJSONObject(2).getString("url_l"));
                     items.add(jsonArray.getJSONObject(3).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(4).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(5).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(6).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(7).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(8).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(9).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(10).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(11).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(12).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(13).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(14).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(15).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(16).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(17).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(18).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(19).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(20).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(21).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(22).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(23).getString("url_l"));
+                    items.add(jsonArray.getJSONObject(24).getString("url_l"));
 
 
                 } catch (JSONException e) {
