@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     SearchView searchView;
-    TextView button;
-    ListView listView;
+    TextView button, idtv, fulltv;
+
 
 
     @Override
@@ -53,56 +53,47 @@ public class MainActivity extends AppCompatActivity {
         searchView = (SearchView) findViewById(R.id.search);
 
         button = (TextView) findViewById(R.id.button);
-
-        listView = (ListView) findViewById(R.id.listView);
-
-
+        idtv = (TextView) findViewById(R.id.id);
+        fulltv = (TextView) findViewById(R.id.all);
 
 
         final AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=pretty", new AsyncHttpResponseHandler() {
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=ugly&nojsoncallback=1", new JsonHttpResponseHandler() {
 
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 Toast.makeText(getApplicationContext(), "Process Successful",
                         Toast.LENGTH_SHORT).show();
 
+                progressBar.setVisibility(View.VISIBLE);
 
-//                try {
-//                    String jsonStr = new String(responseBody, "UTF-8");
-//                    Log.e("Tag ","jsonStr "+jsonStr);
-//
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-//                InputStream is = null;
-//                String contentAsString = null;
-//                try {
-//                    contentAsString = readIt(is);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                String parsingData = null;
-//                try {
-//                    parsingData = parseJson(contentAsString);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                String id, full ;
+                try {
+                    JSONObject jsonObject = responseBody.getJSONObject("photos");
+                    JSONArray jsonArray = jsonObject.getJSONArray("photo");
+                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                    full = jsonObject1.toString();
+                    id = jsonObject1.getString("id");
+                    idtv.setText(id);
+                    fulltv.setText(full);
+                    progressBar.setVisibility(View.GONE);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
-
         });
-
-
     }
 
-    @Override
+            @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
@@ -139,35 +130,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-    public String readIt(InputStream stream) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String read;
-
-        while ((read = br.readLine()) != null) {
-            sb.append(read);
-        }
-        return sb.toString();
-    }
-
-    private String parseJson(String contentAsString) throws JSONException {
-        String postList = "";
-        JSONArray array = new JSONArray(contentAsString);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject post = array.getJSONObject(i);
-            String postTitle = post.getString("pages");
-
-            postList += postTitle;
-        }
-        return postList;
-    }
-
-
-
-
 }
 
 
