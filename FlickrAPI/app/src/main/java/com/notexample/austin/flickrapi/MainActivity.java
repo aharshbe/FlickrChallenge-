@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         final AsyncHttpClient client = new AsyncHttpClient();
 
 
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=ugly&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=frog&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
 
 
             @Override
@@ -68,33 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = responseBody.getJSONObject("photos");
                     JSONArray jsonArray = jsonObject.getJSONArray("photo");
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(9);
-                    items.add(jsonObject1.getString("url_l"));
-                    items.add(jsonArray.getJSONObject(1).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(2).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(3).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(4).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(5).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(6).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(7).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(8).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(9).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(10).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(11).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(12).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(13).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(14).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(15).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(16).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(17).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(18).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(19).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(20).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(21).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(22).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(23).getString("url_l"));
-                    items.add(jsonArray.getJSONObject(24).getString("url_l"));
-
+//                    JSONObject jsonObject1 = jsonArray.getJSONObject(9);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject photo = jsonArray.getJSONObject(i);
+                        if(!photo.has("url_l")) continue;
+                        items.add(photo.getString("url_l"));
+                    }
+                    mAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -119,33 +100,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        return true;
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
-        }
 
     }
+
 
     public void checkingCOnnection(View view) {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
