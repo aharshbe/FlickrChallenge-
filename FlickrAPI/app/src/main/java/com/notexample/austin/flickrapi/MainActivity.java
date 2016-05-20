@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             @Override
-            public void onFailugit are(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
