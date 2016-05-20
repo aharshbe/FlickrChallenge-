@@ -158,6 +158,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);
+                myIntent.putExtra("position", position);
+                String urlid = item2.get(position);
+                myIntent.putExtra("url", urlid);
+                startActivity(myIntent);
+            }
+        });
     }
 
             @Override
