@@ -14,17 +14,15 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        final String image = getIntent().getStringExtra("image");
-        textView = (TextView) findViewById(R.id.textView);
-        textView.setText(image);
-
         final String url = getIntent().getStringExtra("url");
-        textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setText(url);
+        textView = (TextView) findViewById(R.id.textView);
+        textView.setText(url);
+
+
 
 
         webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl(getIntent().getStringExtra("url"));
+        webView.loadUrl(url);
 
     }
 
