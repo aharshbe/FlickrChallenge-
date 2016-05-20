@@ -12,10 +12,13 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,15 +34,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
-
-    ProgressBar progressBar;
-    SearchView searchView;
-    TextView button, idtv, fulltv;
-
+    LinkedList<String> items;
+    ArrayAdapter<String> mAdapter;
+    ListView listView;
 
 
     @Override
@@ -47,18 +49,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-
-        searchView = (SearchView) findViewById(R.id.search);
-
-        button = (TextView) findViewById(R.id.button);
-        idtv = (TextView) findViewById(R.id.id);
-        fulltv = (TextView) findViewById(R.id.all);
+        items = new LinkedList<>();
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(mAdapter);
 
 
         final AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=ugly&nojsoncallback=1", new JsonHttpResponseHandler() {
+
+
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=frog&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
 
 
             @Override
@@ -66,18 +66,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Process Successful",
                         Toast.LENGTH_SHORT).show();
 
-                progressBar.setVisibility(View.VISIBLE);
-
-                String id, full ;
                 try {
                     JSONObject jsonObject = responseBody.getJSONObject("photos");
                     JSONArray jsonArray = jsonObject.getJSONArray("photo");
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                    full = jsonObject1.toString();
-                    id = jsonObject1.getString("id");
-                    idtv.setText(id);
-                    fulltv.setText(full);
-                    progressBar.setVisibility(View.GONE);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject photo = jsonArray.getJSONObject(i);
+                        if(!photo.has("url_l")) continue;
+                        items.add(photo.getString("url_l"));
+                    }
+                    mAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -91,44 +88,18 @@ public class MainActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
-    }
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);
+                myIntent.putExtra("position", position);
+                String imageid = items.get(position);
+                myIntent.putExtra("url", imageid);
+                startActivity(myIntent);
+            }
+        });
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        return true;
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public void checkingCOnnection(View view) {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Connection ready",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Connection not ready",
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 }
 
