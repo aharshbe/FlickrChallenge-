@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name"> Flickr Images Galore</string>
+    <string name="searchhint">Search for ugly images</string>
 </resources>
