@@ -24,4 +24,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:onClick="checkingCOnnection"
+        android:textSize="12sp"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
