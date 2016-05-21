@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         final AsyncHttpClient client = new AsyncHttpClient();
 
 
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=frog&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=francis&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
 
 
             @Override
@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(getApplicationContext(), "Process Not Successful",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
