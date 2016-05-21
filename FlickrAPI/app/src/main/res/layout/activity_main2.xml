@@ -5,17 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.notexample.austin.flickrapi.Main2Activity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:id="@+id/imageView"/>
-
-
     <WebView
         android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:id="@+id/webView"
-        android:layout_below="@+id/imageView" />
+        android:layout_height="match_parent"
+        android:id="@+id/webView"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"/>
 
 
 </RelativeLayout>
