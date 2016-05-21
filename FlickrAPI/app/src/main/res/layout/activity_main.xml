@@ -10,9 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.notexample.austin.flickrapi.MainActivity">
 
-
-
-
     <TextView
         android:id="@+id/button"
         android:layout_width="60dp"
@@ -23,14 +20,6 @@
         android:onClick="checkingCOnnection"
         android:textSize="12sp" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="420dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <EditText
         android:layout_width="250dp"
         android:layout_height="wrap_content"
@@ -38,6 +27,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText"/>
 
     <Button
         android:layout_width="70dp"
