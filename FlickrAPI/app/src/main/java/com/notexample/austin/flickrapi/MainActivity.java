@@ -64,53 +64,66 @@ public class MainActivity extends AppCompatActivity {
 
         final AsyncHttpClient client = new AsyncHttpClient();
 
-        String searchVariable = editText.getText().toString();
+        final String searchVariable = editText.getText().toString();
+
+        // Not sure why this boolean isn't working but the objective was to make it so that if a user enter's nothing, the search doesn't happen
+
+        if (editText.getText().toString() == " ") {
+            Toast.makeText(getApplicationContext(), "No result",
+                    Toast.LENGTH_SHORT).show();
+
+        } else {
 
 
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text="+searchVariable+"&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
+            client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=" + searchVariable + "&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
 
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
-                Toast.makeText(getApplicationContext(), "Process Successful",
-                        Toast.LENGTH_SHORT).show();
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
 
-                try {
-                    JSONObject jsonObject = responseBody.getJSONObject("photos");
-                    JSONArray jsonArray = jsonObject.getJSONArray("photo");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject photo = jsonArray.getJSONObject(i);
-                        if (!photo.has("url_l")) continue;
-                        items.add(photo.getString("url_l"));
+                    Toast.makeText(getApplicationContext(), "Successfully searched for" + " " + editText.getText().toString(),
+                            Toast.LENGTH_SHORT).show();
+
+
+                    try {
+                        JSONObject jsonObject = responseBody.getJSONObject("photos");
+                        JSONArray jsonArray = jsonObject.getJSONArray("photo");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject photo = jsonArray.getJSONObject(i);
+                            if (!photo.has("url_l")) continue;
+                            items.add(photo.getString("url_l"));
+                        }
+                        mAdapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    mAdapter.notifyDataSetChanged();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
                 }
 
-            }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    Toast.makeText(getApplicationContext(), "Process Not Successful",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);
+                    myIntent.putExtra("position", position);
+                    String imageid = items.get(position);
+                    myIntent.putExtra("url", imageid);
+                    startActivity(myIntent);
+                }
+            });
 
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-                Toast.makeText(getApplicationContext(), "Process Not Successful",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);
-                myIntent.putExtra("position", position);
-                String imageid = items.get(position);
-                myIntent.putExtra("url", imageid);
-                startActivity(myIntent);
-            }
-        });
-
+        }
 
     }
 
