@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
 
+
+
                     Toast.makeText(getApplicationContext(), "Successfully searched for" + " " + editText.getText().toString(),
                             Toast.LENGTH_SHORT).show();
 
@@ -88,9 +90,13 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = responseBody.getJSONObject("photos");
                         JSONArray jsonArray = jsonObject.getJSONArray("photo");
+
+
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject photo = jsonArray.getJSONObject(i);
                             if (!photo.has("url_l")) continue;
+                            items.add("Photo" + " " + i + " " + "of search for:" + " " + searchVariable);
                             items.add(photo.getString("url_l"));
                         }
                         mAdapter.notifyDataSetChanged();
@@ -117,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent myIntent = new Intent(MainActivity.this, Main2Activity.class);
                     myIntent.putExtra("position", position);
                     String imageid = items.get(position);
+                    String picasso = items.get(position+1);
                     myIntent.putExtra("url", imageid);
+                    myIntent.putExtra("url2", picasso);
                     startActivity(myIntent);
                 }
             });
