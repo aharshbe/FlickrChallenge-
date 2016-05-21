@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+    }
+
+    public void clickingSearch(View view) {
+
         items = new LinkedList<>();
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         listView = (ListView) findViewById(R.id.listView);
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObject.getJSONArray("photo");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject photo = jsonArray.getJSONObject(i);
-                        if(!photo.has("url_l")) continue;
+                        if (!photo.has("url_l")) continue;
                         items.add(photo.getString("url_l"));
                     }
                     mAdapter.notifyDataSetChanged();
@@ -102,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
 }
 
 
