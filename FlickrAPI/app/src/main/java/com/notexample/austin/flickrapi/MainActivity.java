@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     LinkedList<String> items;
     ArrayAdapter<String> mAdapter;
     ListView listView;
-
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,15 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(mAdapter);
+        editText = (EditText) findViewById(R.id.editText);
 
 
         final AsyncHttpClient client = new AsyncHttpClient();
 
+        String searchVariable = editText.getText().toString();
 
-        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text=francis&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
+
+        client.get("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=cf930e4ef3a4a52af4ee0a6fe69b6b61&format=json&text="+searchVariable+"&nojsoncallback=1&extras=url_l", new JsonHttpResponseHandler() {
 
 
             @Override
